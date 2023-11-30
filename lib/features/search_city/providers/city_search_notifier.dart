@@ -17,7 +17,13 @@ class CitySearchNotifier extends Notifier{
 
   Future<void> searchCity({required String name}) async{
     citySearchState = CitySearchLoading();
-    CitySearchResult _citySearchResult = await _searchService.searchCity(name: name, count: 10, language: "en", format: "json")
+    try {
+      CitySearchResult _citySearchResult = await _searchService.searchCity(
+          name: name, count: 10, language: "en", format: "json");
+      citySearchState = CitySearchSuccess(_citySearchResult);
+    }catch(e){
+      citySearchState = CitySearchFiled(e.toString());
+    }
   }
 
 }
