@@ -5,25 +5,27 @@ import 'package:weather/features/search_city/data/service/city_search_service.da
 import 'package:weather/features/search_city/providers/state/city_search_state.dart';
 import 'package:dio/dio.dart';
 
-class CitySearchNotifier extends Notifier{
-  CitySearchState citySearchState = CitySearchLoading();
+class CitySearchNotifier extends Notifier<CitySearchState>{
+  CitySearchState citySearchState = CitySearchForm();
   @override
   build() {
-    // TODO: implement build
-    throw UnimplementedError();
+    return citySearchState;
   }
   late final Dio _dio = ref.read(dioProvider);
   late final CitySearchService _searchService = CitySearchService(_dio);
 
   Future<void> searchCity({required String name}) async{
-    citySearchState = CitySearchLoading();
+    state = CitySearchLoading();
     try {
       CitySearchResult _citySearchResult = await _searchService.searchCity(
           name: name, count: 10, language: "en", format: "json");
-      citySearchState = CitySearchSuccess(_citySearchResult);
+      state = CitySearchSuccess(_citySearchResult);
     }catch(e){
-      citySearchState = CitySearchFiled(e.toString());
+      state = CitySearchFiled(e.toString());
     }
   }
 
 }
+NotifierProvider<CitySearchNotifier,CitySearchState> citySearchProvider = NotifierProvider((){
+  return CitySearchNotifier();
+});

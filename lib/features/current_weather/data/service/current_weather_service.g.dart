@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'city_search_service.dart';
+part of 'current_weather_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,12 +8,12 @@ part of 'city_search_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _CitySearchService implements CitySearchService {
-  _CitySearchService(
+class _CurrentWeatherService implements CurrentWeatherService {
+  _CurrentWeatherService(
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://geocoding-api.open-meteo.com/v1/';
+    baseUrl ??= 'https://api.open-meteo.com/v1/';
   }
 
   final Dio _dio;
@@ -21,30 +21,28 @@ class _CitySearchService implements CitySearchService {
   String? baseUrl;
 
   @override
-  Future<CitySearchResult> searchCity({
-    required String name,
-    required int count,
-    required String language,
-    required String format,
+  Future<CurrentWeatherResult> getCurrentWeather({
+    required String latitude,
+    required String longitude,
+    required bool currentWeather,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'name': name,
-      r'count': count,
-      r'language': language,
-      r'format': format,
+      r'latitude': latitude,
+      r'longitude': longitude,
+      r'current_weather': currentWeather,
     };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<CitySearchResult>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CurrentWeatherResult>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'search',
+              'forecast',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -53,7 +51,7 @@ class _CitySearchService implements CitySearchService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = CitySearchResult.fromJson(_result.data!);
+    final value = CurrentWeatherResult.fromJson(_result.data!);
     return value;
   }
 
